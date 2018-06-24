@@ -3,11 +3,12 @@ package com.cn.pwd.sercurity;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.cn.pwd.entity.Authority;
+import com.cn.pwd.entity.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import com.security.domain.entity.Authority;
-import com.security.domain.entity.User;
+
 
 /**
  * @author Jonsy

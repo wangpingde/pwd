@@ -1,8 +1,7 @@
 package com.cn.pwd.sercurity.repository;
 
+import com.cn.pwd.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
-
-import com.security.domain.entity.User;
 
 /**
  * @author Jonsy
