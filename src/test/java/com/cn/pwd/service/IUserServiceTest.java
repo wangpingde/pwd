@@ -26,5 +26,9 @@ public class IUserServiceTest extends ApplicationTest {
 
     @Test
     public void findUserById() {
+
+        User userById = iUserService.findUserById("90321");
+
+
     }
 }
