@@ -2,14 +2,12 @@ package com.cn.pwd.util;
 
 import com.sun.xml.internal.messaging.saaj.packaging.mime.util.BASE64DecoderStream;
 import com.sun.xml.internal.messaging.saaj.packaging.mime.util.BASE64EncoderStream;
+import sun.misc.BASE64Decoder;
 
 import java.io.UnsupportedEncodingException;
-import java.security.InvalidKeyException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.security.PrivateKey;
-import java.security.PublicKey;
-import java.security.SecureRandom;
+import java.security.*;
+import java.security.spec.PKCS8EncodedKeySpec;
+import java.security.spec.X509EncodedKeySpec;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -29,7 +27,7 @@ public class EncrpyHper {
      * <br>@param pubkey
      * <br>@return
      */
-    public static String rsaEncoding(String src,PublicKey pubkey){
+    public static String rsaEncoding(String src, PublicKey pubkey) {
         try {
             Cipher cip = Cipher.getInstance("RSA");
             cip.init(cip.ENCRYPT_MODE, pubkey);
@@ -49,6 +47,7 @@ public class EncrpyHper {
         }
 
     }
+
     /**
      * 传入RSA密文和私钥对数据进行解密
      * <br>生成时间：2014年5月2日  下午2:37:08
@@ -57,7 +56,7 @@ public class EncrpyHper {
      * <br>@param privkey
      * <br>@return
      */
-    public static String rsaDeEncoding(String sec,PrivateKey privkey){
+    public static String rsaDeEncoding(String sec, PrivateKey privkey) {
         try {
             Cipher cip = Cipher.getInstance("RSA");
             cip.init(cip.DECRYPT_MODE, privkey);
@@ -88,17 +87,17 @@ public class EncrpyHper {
      * <br>@return
      */
     //对称加密加密
-    public static String doubKeyEncoding(String src,String keysrc,String method) {
+    public static String doubKeyEncoding(String src, String keysrc, String method) {
         SecretKey key;
         try {
             //生成密钥
-            KeyGenerator kg =  KeyGenerator.getInstance(keysrc);
+            KeyGenerator kg = KeyGenerator.getInstance(keysrc);
             //初始化此密钥生成器。
             kg.init(new SecureRandom(keysrc.getBytes("utf-8")));
             key = kg.generateKey();
 
             //加密
-            Cipher ciph =  Cipher.getInstance(method);
+            Cipher ciph = Cipher.getInstance(method);
             ciph.init(Cipher.ENCRYPT_MODE, key);
             ciph.update(src.getBytes("utf-8"));
             //使用64进行编码，一避免出现丢数据情景
@@ -118,6 +117,7 @@ public class EncrpyHper {
             throw new RuntimeException(e);
         }
     }
+
     /**
      * 传入字符串、密钥、加密方式，并解密字符串（对称加密解密密），支持：DES、AES、DESede(3DES)
      * <br>生成时间：2014年5月2日  下午1:12:13
@@ -127,16 +127,16 @@ public class EncrpyHper {
      * <br>@param method(DES、AES、DESede)
      * <br>@return
      */
-    public static String doubKeyDencoding(String sec,String keysrc,String method) {
+    public static String doubKeyDencoding(String sec, String keysrc, String method) {
         SecretKey key;
         try {
             //生成密钥
-            KeyGenerator kg =  KeyGenerator.getInstance(keysrc);
+            KeyGenerator kg = KeyGenerator.getInstance(keysrc);
             //初始化此密钥生成器。
             kg.init(new SecureRandom(keysrc.getBytes("utf-8")));
             key = kg.generateKey();
             //加密
-            Cipher ciph =  Cipher.getInstance(method);
+            Cipher ciph = Cipher.getInstance(method);
             ciph.init(ciph.DECRYPT_MODE, key);
             //使用64进行解码，一避免出现丢数据情况
             byte[] by = BASE64DecoderStream.decode(sec.getBytes());
@@ -166,7 +166,7 @@ public class EncrpyHper {
      * <br>@param method  指定算法(md5、md2、SHA(SHA-1，SHA1)、SHA-256、SHA-384、SHA-512)
      * <br>@return
      */
-    public static String ecodingPasswd(String src,String method){
+    public static String ecodingPasswd(String src, String method) {
 
         try {
             //信息摘要算法
@@ -176,9 +176,40 @@ public class EncrpyHper {
             //使用64进行编码，一避免出现丢数据情景
             return new String(BASE64EncoderStream.encode(encoding));
         } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e+"加密失败！！");
+            throw new RuntimeException(e + "加密失败！！");
         }
 
+    }
+
+    /**
+     *
+     * @param key
+     * @return
+     * @throws Exception
+     */
+    public static PublicKey getPublicKey(String key) throws Exception {
+        byte[] keyBytes;
+        keyBytes = (new BASE64Decoder()).decodeBuffer(key);
+        X509EncodedKeySpec keySpec = new X509EncodedKeySpec(keyBytes);
+        KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+        PublicKey publicKey = keyFactory.generatePublic(keySpec);
+        return publicKey;
+    }
+
+
+    /**
+     *
+     * @param key
+     * @return
+     * @throws Exception
+     */
+    public static PrivateKey getPrivateKey(String key) throws Exception {
+        byte[] keyBytes;
+        keyBytes = (new BASE64Decoder()).decodeBuffer(key);
+        PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(keyBytes);
+        KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+        PrivateKey privateKey = keyFactory.generatePrivate(keySpec);
+        return privateKey;
     }
 
 
