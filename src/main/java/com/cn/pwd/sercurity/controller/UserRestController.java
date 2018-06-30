@@ -38,7 +38,7 @@ public class UserRestController {
         String token = request.getHeader(tokenHeader);
         String username = jwtTokenUtil.getUsernameFromToken(token);
         JwtUser user = (JwtUser) userDetailsService.loadUserByUsername(username);
-        cacheManager.getCache(JwtUser.class.getName()).put(user.getId(), user);
+        cacheManager.getCache(JwtUser.class.getName()).put(user.getId().toString(), user);
         return user;
     }
 

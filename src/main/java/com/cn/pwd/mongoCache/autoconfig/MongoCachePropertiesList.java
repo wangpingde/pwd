@@ -9,6 +9,8 @@ import java.util.List;
 @ConfigurationProperties(prefix = "spring.cache.mongo")
 public class MongoCachePropertiesList {
 
+    private String database;
+
     private List<MongoCacheProperties> caches;
 
     public List<MongoCacheProperties> getCaches() {
@@ -17,5 +19,13 @@ public class MongoCachePropertiesList {
 
     public void setCaches(List<MongoCacheProperties> caches) {
         this.caches = caches;
+    }
+
+    public String getDatabase() {
+        return database;
+    }
+
+    public void setDatabase(String database) {
+        this.database = database;
     }
 }

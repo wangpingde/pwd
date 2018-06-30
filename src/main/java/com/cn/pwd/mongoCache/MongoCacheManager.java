@@ -3,6 +3,7 @@ package com.cn.pwd.mongoCache;
 import org.springframework.cache.Cache;
 import org.springframework.cache.support.AbstractCacheManager;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.util.StringUtils;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -33,18 +34,29 @@ public class MongoCacheManager extends AbstractCacheManager {
 
     protected Cache getMissingCache(String name) {
         if(initialCaches != null && !initialCaches.isEmpty()){
-            MongoTemplate mongoTemplate;
+            MongoTemplate mongoTemplate = null;
             String collection = "";
             Iterator<MongoCacheBuilder> iterator = initialCaches.iterator();
+            boolean isCacheConfig = false;
+            MongoCacheBuilder builder;
             while (iterator.hasNext()){
-                MongoCacheBuilder builder = iterator.next();
+                 builder = iterator.next();
                 mongoTemplate = builder.getMongoTemplate();
                 collection = builder.getCollectionName();
-                if(mongoTemplate != null && !"".equals(collection)){
-                 break;
+                if(mongoTemplate != null && !StringUtils.isEmpty(collection) && !StringUtils.isEmpty(builder.getCacheName())
+                        && name.equalsIgnoreCase(builder.getCacheName())){
+                    isCacheConfig = true;
+                    break;
                 }
-                MongoCacheBuilder cacheBuilder = MongoCacheBuilder.newInstance(collection,name,mongoTemplate);
             }
+              builder = null;
+            if(isCacheConfig){
+                builder = MongoCacheBuilder.newInstance(collection,name,mongoTemplate);
+            }else{
+                builder = MongoCacheBuilder.newInstance("default_caches",name,mongoTemplate);
+            }
+            this.initialCaches.add(builder);
+            return builder.builder();
         }
         return null;
     }

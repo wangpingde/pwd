@@ -16,6 +16,7 @@ spring:
     show-sql: true
   cache:
      mongo:
+       database: cache_database
        caches:
          -
            cacheName: cache1

@@ -18,6 +18,14 @@ public class MongoCacheBuilder {
 
     private  long ttl;
 
+    public String getCacheName() {
+        return cacheName;
+    }
+
+    public void setCacheName(String cacheName) {
+        this.cacheName = cacheName;
+    }
+
     public String getCollectionName() {
         return collectionName;
     }
