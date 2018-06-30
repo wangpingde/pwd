@@ -28,7 +28,7 @@ public class MongoCacheManager extends AbstractCacheManager {
             final MongoCache cache = builder.builder();
             caches.add(cache);
         }
-        return null;
+        return caches;
     }
 
     protected Cache getMissingCache(String name) {

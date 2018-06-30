@@ -4,7 +4,6 @@ package com.cn.pwd.mongoCache;
 import com.cn.pwd.mongoCache.autoconfig.MongoCacheProperties;
 import com.cn.pwd.mongoCache.autoconfig.MongoCachePropertiesList;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -18,8 +17,6 @@ import java.util.List;
 
 @Configuration
 @ConditionalOnClass(MongoTemplate.class)
-@ConditionalOnBean(CacheManager.class)
-@EnableConfigurationProperties(MongoCachePropertiesList.class)
 public class MongoCacheAutoConfiguration {
 
     @Autowired
@@ -31,7 +28,6 @@ public class MongoCacheAutoConfiguration {
     @Bean
     @ConditionalOnProperty("spring.cache.mongo.caches[0].cacheName")
     public CacheManager mongoCacheManager(){
-
         return new MongoCacheManager(mongoCacheBuilders());
 
     }
