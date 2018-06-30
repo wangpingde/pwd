@@ -1,9 +1,11 @@
 package com.cn.pwd.sercurity.controller;
 
+import com.cn.pwd.mongoCache.MongoCacheManager;
 import com.cn.pwd.sercurity.JwtTokenUtil;
 import com.cn.pwd.sercurity.JwtUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.CacheManager;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -27,11 +29,16 @@ public class UserRestController {
     @Autowired
     private UserDetailsService userDetailsService;
 
+    @Autowired
+    private CacheManager cacheManager;
+
+
     @RequestMapping(value = "user", method = RequestMethod.GET)
     public JwtUser getAuthenticatedUser(HttpServletRequest request) {
         String token = request.getHeader(tokenHeader);
         String username = jwtTokenUtil.getUsernameFromToken(token);
         JwtUser user = (JwtUser) userDetailsService.loadUserByUsername(username);
+        cacheManager.getCache(JwtUser.class.getName()).put(user.getId(), user);
         return user;
     }
 
