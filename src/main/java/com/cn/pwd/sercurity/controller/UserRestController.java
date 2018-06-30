@@ -5,6 +5,7 @@ import com.cn.pwd.sercurity.JwtTokenUtil;
 import com.cn.pwd.sercurity.JwtUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,7 +39,8 @@ public class UserRestController {
         String token = request.getHeader(tokenHeader);
         String username = jwtTokenUtil.getUsernameFromToken(token);
         JwtUser user = (JwtUser) userDetailsService.loadUserByUsername(username);
-        cacheManager.getCache(JwtUser.class.getName()).put(user.getId().toString(), user);
+        Cache.ValueWrapper valueWrapper = cacheManager.getCache(JwtUser.class.getName()).get(user.getId().toString());
+
         return user;
     }
 
