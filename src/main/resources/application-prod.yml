@@ -1,0 +1,17 @@
+#生产环境
+#测试环境
+server:
+  port: 8082
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/mongo
+  datasource:
+    url: jdbc:mysql://localhost:3306/demo?useUnicode=true&characterEncoding=utf-8
+    usename: root
+    password: root
+    data:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true

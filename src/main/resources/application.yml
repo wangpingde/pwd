@@ -1,0 +1,23 @@
+#主配置文件，配置了这个会优先读取里面的属性覆盖主配置文件的属性
+spring:
+    profiles:
+       active: dev
+    http:
+      multipart:
+        enabled: true
+        file-size-threshold: 0
+        location: d:/tmp
+        max-file-size: 5Mb
+        max-request-size: 10Mb
+logging:
+  config: classpath:logback-roncoo.xml
+
+jwt:
+   header: Authorization
+   secret: mySecret
+   expiration: 86400
+   route:
+      authentication:
+        path: auth
+        refresh: refresh
+
