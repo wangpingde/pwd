@@ -16,7 +16,7 @@
 		scope="prototype">
 		<property name="patterns">
 			<list>
-				<value>com.roncoo.education.mapper.*</value>
+				<value>com.cn.pwd.repository.*</value>
 			</list>
 		</property>
 	</bean>
