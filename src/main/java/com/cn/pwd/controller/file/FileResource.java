@@ -27,7 +27,7 @@ public class FileResource {
     private IFileService iFileService;
 
     @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<?> upload(HttpServletRequest request, MultipartFile file) {
+    public ResponseEntity<?> upload(HttpServletRequest request, @RequestParam("file") MultipartFile file) {
         try {
             String fileName = file.getOriginalFilename();
             String fileId = iFileService.saveFile(file.getInputStream(), fileName, mediaType(fileName).toString());

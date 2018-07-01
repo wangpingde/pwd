@@ -6,7 +6,6 @@ spring:
       multipart:
         enabled: true
         file-size-threshold: 0
-        location: d:/tmp
         max-file-size: 5Mb
         max-request-size: 10Mb
 logging:
