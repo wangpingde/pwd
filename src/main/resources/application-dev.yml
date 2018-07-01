@@ -10,6 +10,17 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
     username: root
     password: root
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      initial-size: 8
+      min-idle: 5
+      max-active: 10
+      query-timeout: 1000
+      druid.query-timeout: 6000
+      transaction-query-timeout: 6000
+      remove-abandoned-timeout: 1800
+      filter-class-names: stat
+      filters: stat,config
   jpa:
     hibernate:
       ddl-auto: update
