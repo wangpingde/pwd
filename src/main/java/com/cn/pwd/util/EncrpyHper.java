@@ -1,9 +1,6 @@
 package com.cn.pwd.util;
 
-import com.sun.xml.internal.messaging.saaj.packaging.mime.util.BASE64DecoderStream;
-import com.sun.xml.internal.messaging.saaj.packaging.mime.util.BASE64EncoderStream;
-import sun.misc.BASE64Decoder;
-
+import org.apache.commons.codec.binary.Base64;
 import java.io.UnsupportedEncodingException;
 import java.security.*;
 import java.security.spec.PKCS8EncodedKeySpec;
@@ -32,7 +29,7 @@ public class EncrpyHper {
             Cipher cip = Cipher.getInstance("RSA");
             cip.init(cip.ENCRYPT_MODE, pubkey);
             byte[] by = cip.doFinal(src.getBytes());
-            return new String(BASE64EncoderStream.encode(by));
+            return new String(Base64.decodeBase64(by));
 
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
@@ -60,7 +57,7 @@ public class EncrpyHper {
         try {
             Cipher cip = Cipher.getInstance("RSA");
             cip.init(cip.DECRYPT_MODE, privkey);
-            byte[] by = BASE64DecoderStream.decode(sec.getBytes());
+            byte[] by = Base64.decodeBase64(sec.getBytes());
             return new String(cip.doFinal(by));
 
         } catch (NoSuchAlgorithmException e) {
@@ -101,7 +98,7 @@ public class EncrpyHper {
             ciph.init(Cipher.ENCRYPT_MODE, key);
             ciph.update(src.getBytes("utf-8"));
             //使用64进行编码，一避免出现丢数据情景
-            byte[] by = BASE64EncoderStream.encode(ciph.doFinal());
+            byte[] by = Base64.decodeBase64(ciph.doFinal());
             return new String(by);
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
@@ -139,7 +136,7 @@ public class EncrpyHper {
             Cipher ciph = Cipher.getInstance(method);
             ciph.init(ciph.DECRYPT_MODE, key);
             //使用64进行解码，一避免出现丢数据情况
-            byte[] by = BASE64DecoderStream.decode(sec.getBytes());
+            byte[] by = Base64.decodeBase64(sec.getBytes());
             ciph.update(by);
             return new String(ciph.doFinal());
 
@@ -174,7 +171,7 @@ public class EncrpyHper {
             md5.update(src.getBytes());
             byte[] encoding = md5.digest();
             //使用64进行编码，一避免出现丢数据情景
-            return new String(BASE64EncoderStream.encode(encoding));
+            return new String(Base64.decodeBase64(encoding));
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e + "加密失败！！");
         }
@@ -189,7 +186,7 @@ public class EncrpyHper {
      */
     public static PublicKey getPublicKey(String key) throws Exception {
         byte[] keyBytes;
-        keyBytes = (new BASE64Decoder()).decodeBuffer(key);
+        keyBytes = Base64.decodeBase64(key);
         X509EncodedKeySpec keySpec = new X509EncodedKeySpec(keyBytes);
         KeyFactory keyFactory = KeyFactory.getInstance("RSA");
         PublicKey publicKey = keyFactory.generatePublic(keySpec);
@@ -205,7 +202,7 @@ public class EncrpyHper {
      */
     public static PrivateKey getPrivateKey(String key) throws Exception {
         byte[] keyBytes;
-        keyBytes = (new BASE64Decoder()).decodeBuffer(key);
+        keyBytes = Base64.decodeBase64(key);
         PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(keyBytes);
         KeyFactory keyFactory = KeyFactory.getInstance("RSA");
         PrivateKey privateKey = keyFactory.generatePrivate(keySpec);
