@@ -88,7 +88,7 @@ public class ExcelUtil extends DefaultHandler {
 
     public XMLReader fetchSheetParser(SharedStringsTable sst) throws SAXException {
         XMLReader parser = XMLReaderFactory
-                .createXMLReader("org.apache.xerces.parsers.SAXParser");
+                .createXMLReader("com.sun.org.apache.xerces.internal.parsers.SAXParser");
         this.sst = sst;
         parser.setContentHandler(this);
         return parser;
