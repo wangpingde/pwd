@@ -1,10 +1,15 @@
 package com.cn.pwd.domain;
 
+import java.io.Serializable;
+
 /**
  * @author Jonsy
  *
  */
-public class Person {
+public class Person implements Serializable {
+
+    private static final long serialVersionUID = -533471021920552399L;
+
     private String name;
     private String email;
 
