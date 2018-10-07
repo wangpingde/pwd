@@ -175,6 +175,24 @@
             <artifactId>protostuff-runtime</artifactId>
             <version>1.0.8</version>
         </dependency>
+        <!--java二维码生成-->
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>core</artifactId>
+            <version>3.3.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>javase</artifactId>
+            <version>3.3.0</version>
+        </dependency>
+
+        <!--thumbnailator-->
+        <dependency>
+            <groupId>net.coobird</groupId>
+            <artifactId>thumbnailator</artifactId>
+            <version>0.4.8</version>
+        </dependency>
 
         <!-- caching -->
         <dependency>
